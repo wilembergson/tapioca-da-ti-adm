@@ -8,7 +8,7 @@ const config: Config = {
   ],
   theme: {
     fontFamily: {
-      'principal': ['Madimi One', 'sans-serif']
+      'header': ['Madimi One', 'sans-serif']
     },
     extend: {
       colors: {

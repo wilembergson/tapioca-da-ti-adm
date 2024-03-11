@@ -1,21 +1,62 @@
+import { useState } from 'react'
 import {PedidoTipo} from '../page'
-import BotaoCopiar from './BotaoCopiar'
 import EditarItemModal from './EditarItemModal'
 import Item from './Item'
+import { erroMessage, sucessMessage } from '../utils/Toasts'
+import api from '../api/api-connection'
+import { FaEdit } from "react-icons/fa"
+import { FaCheckCircle } from "react-icons/fa"
 
 type Props = {
     dados:PedidoTipo
 }
 
 export default function Pedido({dados}:Props){
+    const [editando, setEditando] = useState(false)
+    const [pix, setPix] = useState<string>(dados.pix)
+
+    function handleChange(e: any) {
+        e.preventDefault()
+        setPix((e.target.value))
+    }
+
+    async function atualizar(){
+        try {
+            const response = await api.atualizarPix(pix)
+            sucessMessage(response.data.mensagem)
+            setEditando(false)
+        } catch (error:any) {
+            erroMessage(error.response.data.mensagem)
+        }
+    }
+
     return(
             <div className='flex flex-col p-2 m-4 md:w-4/5 w-full rounded-md text-gray-clear'>
                 <div className='flex flex-col bg-white shadow-md rounded-md w-full p-2 mb-4'>
-                    <div className='flex justify-between'>
-                        <h1 className='flex text-2xl mb-4 font-bold'>
-                            PIX: {dados?.pix}
-                        </h1>
-                        <BotaoCopiar textToCopy={dados.pix}/>
+                    <div className='flex justify-between items-center'>
+                        {editando ?
+                            <input className='flex mb-4 bg-gray-300 p-2 rounded-md'
+                                type="text"
+                                placeholder='pix'
+                                name='pix'
+                                onChange={(e: any) => handleChange(e)}
+                                value={pix}
+                                required
+                            />
+                        :
+                            <h1 className='flex text-2xl mb-4 font-bold'>
+                                PIX: {dados?.pix}
+                            </h1>
+                        } 
+                        {editando ?
+                            <button onClick={() => atualizar()}>
+                                <FaCheckCircle size={30}/>
+                            </button>    
+                        :
+                            <button onClick={() => setEditando(true)}>
+                                <FaEdit size={30}/>
+                            </button>
+                        }
                     </div>
                     <section className='flex justify-between w-full'>
                         <div>

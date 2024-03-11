@@ -16,6 +16,12 @@ async function getPedidoAtual(){
     return await axios.get(`${API_URL}/pedido/atual`)
 }
 
+async function atualizarPix(pix:string){
+    return await axios.put(`${API_URL}/pedido/atualizar-pix`, {
+        pix
+    })
+}
+
 async function getItemPorId(id:number){
     return await axios.get(`${API_URL}/item/${id}`)
 }
@@ -42,7 +48,8 @@ const api = {
     listarSabores,
     atualizarItem,
     novoItem,
-    deletarItemPorId
+    deletarItemPorId,
+    atualizarPix
 }
 
 export default api

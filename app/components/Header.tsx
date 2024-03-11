@@ -1,9 +1,6 @@
-import { useEffect, useState } from "react"
-import { FaPowerOff } from "react-icons/fa";
-
 export default function Header(){
     return(
-        <header className="flex bg-azul text-laranja w-full font-principal
+        <header className="flex bg-azul text-laranja w-full font-header
                         justify-between items-center py-4 px-2 shadow-md">
             <h1 className="text-2xl font-bold">
                 Tapioca da T.I
