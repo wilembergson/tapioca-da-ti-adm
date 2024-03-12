@@ -103,7 +103,8 @@ export default function Pedido({dados}:Props){
                         </div>
                     </section>
                 </div>
-                <div>{dados.itens.length !== 0
+                <div className='flex flex-col w-full'>
+                    {dados.itens.length !== 0
                     ? dados?.itens?.map(item => <Item key={item.id} dados={item}/>)
                     : <></>}
                 </div>

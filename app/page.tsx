@@ -30,7 +30,7 @@ export default function Home() {
   },[pedido, item])
 
   return (
-    <main className="flex min-h-screen flex-col items-center pb-20">
+    <main className="flex min-h-screen flex-col items-center pb-20 w-full">
           <Header/>
             {
               pedido ? <Pedido dados={pedido!}/> 

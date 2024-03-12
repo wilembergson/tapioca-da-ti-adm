@@ -34,6 +34,10 @@ async function atualizarItem(data:AtualizarItem){
     return await axios.put(`${API_URL}/item/atualizar`, data)
 }
 
+async function atualizarStatusPagamento(id:number){
+    return await axios.put(`${API_URL}/item/atualizar-status/${id}`)
+}
+
 async function novoItem(data:NovoItem){
     return await axios.post(`${API_URL}/item`, data)
 }
@@ -49,7 +53,8 @@ const api = {
     atualizarItem,
     novoItem,
     deletarItemPorId,
-    atualizarPix
+    atualizarPix,
+    atualizarStatusPagamento
 }
 
 export default api
