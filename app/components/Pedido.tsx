@@ -19,6 +19,7 @@ export default function Pedido({dados}:Props){
     const inputRef = useRef<HTMLInputElement>(null)
     const [editando, setEditando] = useState(false)
     const [pix, setPix] = useState<string>(dados.pix)
+    const [statusId, setStatusId] = useState<number>(1)
 
     function handleChange(e: any) {
         e.preventDefault()
@@ -26,9 +27,7 @@ export default function Pedido({dados}:Props){
     }
 
     function editar(){
-       
         setEditando(true)
-        
     }
 
     async function atualizar(){
@@ -36,6 +35,15 @@ export default function Pedido({dados}:Props){
             const response = await api.atualizarPix(pix)
             sucessMessage(response.data.mensagem)
             setEditando(false)
+        } catch (error:any) {
+            erroMessage(error.response.data.mensagem)
+        }
+    }
+
+    async function atualizarStatusDoPedido(id:number){
+        try {
+            const response = await api.atualizarStatusPedido(id)
+            sucessMessage(response.data.mensagem)
         } catch (error:any) {
             erroMessage(error.response.data.mensagem)
         }
@@ -78,18 +86,23 @@ export default function Pedido({dados}:Props){
                     <section className='flex flex-col'>
                         <h1>STATUS: <strong>{dados.status}</strong></h1>
                         <div className='flex flex-wrap mb-4'>
-                            <div className="flex items-center bg-blue-600
-                                    text-white rounded-md shadow-md p-1 mr-2">
-                                <FaCheck size={14}/> Feito
+                            <div className="flex items-center bg-blue-600 cursor-pointer
+                                    text-white rounded-md shadow-md p-1 mr-2"
+                                    onClick={() => atualizarStatusDoPedido(2)}>
+                                <FaCheck size={14}/>
+                                Feito
                             </div>
-                            <div className="flex bg-orange-600 
-                                    text-white rounded-md shadow-md p-1 mr-2">
-                                <MdDeliveryDining size={24}/> <h1>À caminho</h1>
+                            <div className="flex bg-orange-600 cursor-pointer
+                                    text-white rounded-md shadow-md p-1 mr-2"
+                                    onClick={() => atualizarStatusDoPedido(3)}>
+                                <MdDeliveryDining size={24}/> 
+                                <h1>À caminho</h1>
                             </div>
-                            <div className="flex items-center bg-green-600
-                                    text-white rounded-md shadow-md p-1">
+                            <div className="flex items-center bg-green-600 cursor-pointer
+                                    text-white rounded-md shadow-md p-1"
+                                    onClick={() => atualizarStatusDoPedido(4)}>
                                 <LuPackageCheck size={24}/> Entregue
-                    </div>
+                        </div>
                         </div>
                     </section>
                     <section className='flex justify-between w-full'>

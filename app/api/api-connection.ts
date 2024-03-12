@@ -22,6 +22,10 @@ async function atualizarPix(pix:string){
     })
 }
 
+async function atualizarStatusPedido(id:number){
+    return await axios.put(`${API_URL}/pedido/atualizar-status/${id}`)
+}
+
 async function getItemPorId(id:number){
     return await axios.get(`${API_URL}/item/${id}`)
 }
@@ -54,7 +58,8 @@ const api = {
     novoItem,
     deletarItemPorId,
     atualizarPix,
-    atualizarStatusPagamento
+    atualizarStatusPagamento,
+    atualizarStatusPedido
 }
 
 export default api
