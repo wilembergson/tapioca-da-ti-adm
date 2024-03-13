@@ -12,6 +12,13 @@ export type NovoItem = {
     quantidade: number|undefined,
     sabor_id:number|undefined
 }
+
+async function novoPedido(pix:string){
+    return await axios.post(`${API_URL}/pedido`, {
+        pix
+    })
+}
+
 async function getPedidoAtual(){
     return await axios.get(`${API_URL}/pedido/atual`)
 }
@@ -55,6 +62,7 @@ async function listarSabores(){
 }
 
 const api = {
+    novoPedido,
     getPedidoAtual,
     getItemPorId,
     listarSabores,

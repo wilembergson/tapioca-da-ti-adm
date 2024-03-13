@@ -6,9 +6,10 @@ import { useEffect, useState } from "react";
 import Header from "./components/Header";
 import api from "./api/api-connection";
 import Pedido from "./components/Pedido";
-import { TbShoppingCartX } from "react-icons/tb";
+import { TbShoppingCart, TbShoppingCartPlus, TbShoppingCartX } from "react-icons/tb";
 import { useGlobalContext } from "./contexts/Contexto"
 import NovoItemModal from "./components/NovoItemModal";
+import { erroMessage } from './utils/Toasts';
 
 
 export default function Home() {
@@ -21,6 +22,15 @@ export default function Home() {
     setPedido(pedido.data)
   }
 
+  async function novoPedido(){
+    try {
+      const pedido = await api.novoPedido('Editar PIX ->')
+      window.location.reload()
+      //setPedido(pedido.data)
+    } catch (error:any) {
+      erroMessage(error.response.data.mensagem)
+    }
+  }
 
   useEffect(() => {
     obterPedido()
@@ -32,11 +42,13 @@ export default function Home() {
             {
               pedido ? <Pedido dados={pedido!}/> 
             : 
-              <div className="flex flex-col flex-grow text-[#5D6D7E] items-center justify-center w-full h-full">
-                  <TbShoppingCartX size={56}/>
-                  <h1 className="flex text-2xl">
-                    Nenhum pedido no momento
-                  </h1>
+              <div className="flex flex-col flex-grow text-azul items-center justify-center w-full h-full">
+                  <TbShoppingCartPlus size={76}/>
+                  <button onClick={novoPedido}
+                        className="flex bg-laranja text-azul text-xl
+                        font-bold rounded-lg p-4 mt-2">
+                    Iniciar novo pedido
+                  </button>
               </div>
             }
       <NovoItemModal obterPedido={obterPedido}/>
