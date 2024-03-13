@@ -15,9 +15,6 @@ export default function Home() {
   const {item} = useGlobalContext()
   const [pedido, setPedido] = useState<PedidoTipo>()
 
-  useEffect(() => {
-    Aos.init({ duration: 500 })
-  }, [])
 
   async function obterPedido(){
     const pedido = await api.getPedidoAtual()

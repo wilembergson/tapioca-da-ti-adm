@@ -49,6 +49,15 @@ export default function Pedido({dados}:Props){
         }
     }
 
+    async function deletarPedido(){
+        try {
+            const response = await api.deletarPedidoAtual()
+            sucessMessage(response.data.mensagem)
+        } catch (error:any) {
+            erroMessage(error.response.data.mensagem)
+        }
+    }
+
     useEffect(() => {
         if (inputRef.current) {
             inputRef.current.focus()
@@ -115,6 +124,15 @@ export default function Pedido({dados}:Props){
                             <h2>R${dados.total.toFixed(2)}</h2> 
                         </div>
                     </section>
+                    {dados.status === 'ENTREGUE' ?
+                        <button className='flex bg-red-500 text-white justify-center
+                            items-center rounded-md py-2 mt-2'
+                                onClick={deletarPedido}>
+                            <MdDeleteForever size={30}/>
+                            Deletar pedido
+                        </button>
+                        :<></>    
+                    }
                 </div>
                 <div className='flex flex-col w-full'>
                     {dados.itens.length !== 0

@@ -26,6 +26,10 @@ async function atualizarStatusPedido(id:number){
     return await axios.put(`${API_URL}/pedido/atualizar-status/${id}`)
 }
 
+async function deletarPedidoAtual(){
+    return await axios.delete(`${API_URL}/pedido/deletar`)
+}
+
 async function getItemPorId(id:number){
     return await axios.get(`${API_URL}/item/${id}`)
 }
@@ -59,7 +63,8 @@ const api = {
     deletarItemPorId,
     atualizarPix,
     atualizarStatusPagamento,
-    atualizarStatusPedido
+    atualizarStatusPedido,
+    deletarPedidoAtual
 }
 
 export default api
