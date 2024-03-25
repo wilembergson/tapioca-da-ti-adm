@@ -5,7 +5,7 @@ import { MdOutlineAttachMoney } from "react-icons/md";
 import api from "../api/api-connection";
 import { erroMessage, sucessMessage } from "../utils/Toasts"
 import { useState } from "react";
-import Loader from "./Loader";
+import LoaderCircle from "./LoaderCircle";
 
 type Props = {
     dados: Item
@@ -64,7 +64,7 @@ export default function Item({dados}:Props){
                                      onClick={deletarItem}>
                             <MdDeleteForever size={30}/>
                         </div>
-                    </> : <Loader/>    
+                    </> : <LoaderCircle/>    
                 }
                 </section>
             </div>

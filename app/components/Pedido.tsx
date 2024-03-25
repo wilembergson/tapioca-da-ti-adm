@@ -10,6 +10,8 @@ import { MdDeleteForever } from 'react-icons/md'
 import { FaCheck } from "react-icons/fa"
 import { MdDeliveryDining } from "react-icons/md"
 import { LuPackageCheck } from "react-icons/lu";
+import LoaderBars from './LoaderBars'
+import LoaderCircle from './LoaderCircle'
 
 type Props = {
     dados:PedidoTipo
@@ -19,7 +21,8 @@ export default function Pedido({dados}:Props){
     const inputRef = useRef<HTMLInputElement>(null)
     const [editando, setEditando] = useState(false)
     const [pix, setPix] = useState<string>(dados.pix)
-    const [statusId, setStatusId] = useState<number>(1)
+    const [loading, setLoading] = useState(false)
+    const [loadingStatus, setLoadingStatus] = useState(false)
 
     function handleChange(e: any) {
         e.preventDefault()
@@ -30,21 +33,27 @@ export default function Pedido({dados}:Props){
         setEditando(true)
     }
 
-    async function atualizar(){
+    async function atualizarPix(){
+        setLoading(true)
         try {
             const response = await api.atualizarPix(pix)
             sucessMessage(response.data.mensagem)
             setEditando(false)
+            setLoading(false)
         } catch (error:any) {
+            setLoading(false)
             erroMessage(error.response.data.mensagem)
         }
     }
 
     async function atualizarStatusDoPedido(id:number){
+        setLoadingStatus(true)
         try {
             const response = await api.atualizarStatusPedido(id)
             sucessMessage(response.data.mensagem)
+            setLoadingStatus(false)
         } catch (error:any) {
+            setLoadingStatus(false)
             erroMessage(error.response.data.mensagem)
         }
     }
@@ -69,23 +78,33 @@ export default function Pedido({dados}:Props){
                 <div className='flex flex-col bg-white text-azul shadow-md rounded-md w-full p-2 mb-4'>
                     <div className='flex flex-wrap mb-4 justify-start items-center'>
                         {editando ?
-                            <input ref={inputRef} className='flex mr-2 bg-gray-300 p-2 rounded-md'
-                                type="text"
-                                placeholder='pix'
-                                name='pix'
-                                onChange={(e: any) => handleChange(e)}
-                                value={pix}
-                                required
-                            />
+                            <>
+                                {!loading ?
+                                    <input ref={inputRef} className='flex mr-2 bg-gray-300 p-2 rounded-md'
+                                    type="text"
+                                    placeholder='pix'
+                                    name='pix'
+                                    onChange={(e: any) => handleChange(e)}
+                                    value={pix}
+                                    required
+                                />
+                                : <LoaderCircle/>    
+                                }
+                            </>
                         :
                             <h1 className='flex text-lg mr-2 font-bold'>
                                 PIX: {dados?.pix}
                             </h1>
                         } 
                         {editando ?
-                            <button onClick={() => atualizar()}>
-                                <FaCheckCircle size={30} color='#F5B041'/>
-                            </button>    
+                            <>
+                                {!loading ?
+                                    <button onClick={() => atualizarPix()}>
+                                        <FaCheckCircle size={30} color='#F5B041'/>
+                                    </button>
+                                    : <></>    
+                                }
+                            </>    
                         :
                             <button onClick={() => editar()}>
                                 <FaEdit size={30} color='#F5B041'/>
@@ -93,7 +112,12 @@ export default function Pedido({dados}:Props){
                         }
                     </div>
                     <section className='flex flex-col'>
-                        <h1>STATUS: <strong>{dados.status}</strong></h1>
+                        <h1 className='flex items-center'>STATUS: 
+                            {!loadingStatus ?
+                                <strong>{dados.status}</strong>
+                                : <LoaderBars/>    
+                            }
+                        </h1>
                         <div className='flex flex-wrap mb-4'>
                             <div className="flex items-center bg-blue-600 cursor-pointer
                                     text-white rounded-md shadow-md p-1 mr-2"
@@ -111,17 +135,17 @@ export default function Pedido({dados}:Props){
                                     text-white rounded-md shadow-md p-1"
                                     onClick={() => atualizarStatusDoPedido(4)}>
                                 <LuPackageCheck size={24}/> Entregue
-                        </div>
+                            </div>
                         </div>
                     </section>
                     <section className='flex justify-between w-full'>
                         <div>
-                            <h2 className='text-red-700'>Faltam pagar: R${dados.totalAPagar}</h2>
-                            <h2 className='text-green-700'>Já foi pago: R${dados.totalPago}</h2>
+                            <h2 className='text-red-700'>Faltam pagar: R${dados.totalAPagar.toFixed(2)}</h2>
+                            <h2 className='text-green-700'>Já foi pago: R${dados.totalPago.toFixed(2)}</h2>
                         </div>
                         <div className='flex flex-col items-end font-bold'>
                             <h2>TOTAL</h2>
-                            <h2>R${dados.total}</h2> 
+                            <h2>R${dados.total.toFixed(2)}</h2> 
                         </div>
                     </section>
                     {dados.status === 'ENTREGUE' ?
