@@ -25,8 +25,7 @@ export default function NovoItemModal({obterPedido}:Props) {
             setSabores(response.data)
             setSaborAtual(response.data[0])
         } catch (error: any) {
-            alert(error)
-            //alerts.ErrorAlert(error.response.data.mensagem)
+            erroMessage(error.response.data.mensagem)
         }
     }
 
@@ -55,7 +54,7 @@ export default function NovoItemModal({obterPedido}:Props) {
 
     useEffect(() => {
         obterSabores()
-    }, [])
+    },[])
 
     return (
         <Modal isVisible={showNovoItemModal}>
