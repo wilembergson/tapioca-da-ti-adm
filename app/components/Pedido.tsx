@@ -10,6 +10,7 @@ import { MdDeleteForever } from 'react-icons/md'
 import { FaCheck } from "react-icons/fa"
 import { MdDeliveryDining } from "react-icons/md"
 import { LuPackageCheck } from "react-icons/lu";
+import { BsCartPlus } from "react-icons/bs";
 import LoaderBars from './LoaderBars'
 import LoaderCircle from './LoaderCircle'
 
@@ -119,12 +120,21 @@ export default function Pedido({dados}:Props){
                             }
                         </h1>
                         <div className='flex flex-wrap mb-4'>
-                            <div className="flex items-center bg-blue-600 cursor-pointer
-                                    text-white rounded-md shadow-md p-1 mr-2"
-                                    onClick={() => atualizarStatusDoPedido(2)}>
-                                <FaCheck size={14}/>
-                                Feito
-                            </div>
+                            {dados.status === 'CRIANDO' ?
+                                <div className="flex items-center bg-blue-600 cursor-pointer
+                                        text-white rounded-md shadow-md p-1 mr-2"
+                                        onClick={() => atualizarStatusDoPedido(2)}>
+                                    <FaCheck size={14}/>
+                                    Feito
+                                </div>
+                            :
+                                <div className="flex items-center bg-yellow-600 cursor-pointer
+                                        text-white rounded-md shadow-md p-1 mr-2"
+                                        onClick={() => atualizarStatusDoPedido(1)}>
+                                    <BsCartPlus size={24}/>
+                                    Criando
+                                </div>
+                            }
                             <div className="flex bg-orange-600 cursor-pointer
                                     text-white rounded-md shadow-md p-1 mr-2"
                                     onClick={() => atualizarStatusDoPedido(3)}>
@@ -153,7 +163,7 @@ export default function Pedido({dados}:Props){
                             items-center rounded-md py-2 mt-2'
                                 onClick={deletarPedido}>
                             <MdDeleteForever size={30}/>
-                            Deletar pedido
+                            Encerrar pedido
                         </button>
                         :<></>    
                     }

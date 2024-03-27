@@ -10,11 +10,13 @@ import { TbShoppingCart, TbShoppingCartPlus, TbShoppingCartX } from "react-icons
 import { useGlobalContext } from "./contexts/Contexto"
 import NovoItemModal from "./components/NovoItemModal";
 import { erroMessage } from './utils/Toasts';
+import LoaderLogo from './components/LoaderLogo';
 
 
 export default function Home() {
   const {item} = useGlobalContext()
   const [pedido, setPedido] = useState<PedidoTipo>()
+  const [loading, setLoading] = useState(false)
 
 
   async function obterPedido(){
@@ -23,11 +25,13 @@ export default function Home() {
   }
 
   async function novoPedido(){
+    setLoading(true)
     try {
-      const pedido = await api.novoPedido('Editar PIX ->')
-      window.location.reload()
-      //setPedido(pedido.data)
+      await api.novoPedido('Editar PIX ->')
+      obterPedido()
+      setLoading(false)
     } catch (error:any) {
+      setLoading(false)
       erroMessage(error.response.data.mensagem)
     }
   }
@@ -42,14 +46,21 @@ export default function Home() {
             {
               pedido ? <Pedido dados={pedido!}/> 
             : 
-              <div className="flex flex-col flex-grow text-azul items-center justify-center w-full h-full">
-                  <TbShoppingCartPlus size={76}/>
-                  <button onClick={novoPedido}
-                        className="flex bg-laranja text-azul text-xl
-                        font-bold rounded-lg p-4 mt-2">
-                    Iniciar novo pedido
-                  </button>
-              </div>
+              <>
+                {loading ?
+                  <div className='flex mt-52'>
+                      <LoaderLogo/> 
+                  </div>
+                : <div className="flex flex-col flex-grow text-azul items-center justify-center w-full h-full">
+                      <TbShoppingCartPlus size={76}/>
+                      <button onClick={novoPedido}
+                            className="flex bg-laranja text-azul text-xl
+                            font-bold rounded-lg p-4 mt-2">
+                        Iniciar novo pedido
+                      </button>
+                  </div>               
+                }
+              </>
             }
       <NovoItemModal obterPedido={obterPedido}/>
     </main>

@@ -6,7 +6,7 @@ import { GlobalContextProvider } from "./contexts/Contexto";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Tapioca da TI"
+  title: "Tapioca da TI - ADM"
 };
 
 export default function RootLayout({

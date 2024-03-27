@@ -14,7 +14,7 @@ const config: Config = {
       colors: {
         'creme': '#F9E79F',
         'laranja': '#F5B041',
-        'azul': '#7D3174',
+        'azul': '#0b5a8f',
         'gray': '#424242',
         'gray-clear': '#585858',
         'gray-clear-2': '#848484'

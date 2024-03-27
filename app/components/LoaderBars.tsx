@@ -6,7 +6,7 @@ export default function LoaderBars(){
                 visible={true}
                 height="60"
                 width="70"
-                barColor="#7D3174"
+                barColor="#0b5a8f"
                 borderColor="#F5B041"
                 ariaLabel="progress-bar-loading"
                 wrapperStyle={{}}
