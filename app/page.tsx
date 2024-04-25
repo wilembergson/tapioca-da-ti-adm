@@ -8,20 +8,38 @@ import api from "./api/api-connection";
 import Pedido from "./components/Pedido";
 import { TbShoppingCart, TbShoppingCartPlus, TbShoppingCartX } from "react-icons/tb";
 import { useGlobalContext } from "./contexts/Contexto"
-import NovoItemModal from "./components/NovoItemModal";
+import ListaPedidosModal from "./components/ListaPedidosModal";
 import { erroMessage } from './utils/Toasts';
 import LoaderLogo from './components/LoaderLogo';
-
 
 export default function Home() {
   const {item} = useGlobalContext()
   const [pedido, setPedido] = useState<PedidoTipo>()
   const [loading, setLoading] = useState(false)
+  const [somaPedidos, setSomaPedidos] = useState<Items[]>([])
 
+  function preencherDados(pedido: PedidoTipo){
+      const mapSomaQuantidades = new Map<string, number>()
+      for (const item of pedido.itens!) {
+          if (mapSomaQuantidades.has(item.sabor.descricao)) {
+              const quantidadeAtual = mapSomaQuantidades.get(item.sabor.descricao) || 0;
+              mapSomaQuantidades.set(item.sabor.descricao, quantidadeAtual + item.quantidade);
+          } else {
+              mapSomaQuantidades.set(item.sabor.descricao, item.quantidade);
+          }
+      }
+
+    const arraySomaQuantidades: Items[] = [];
+    mapSomaQuantidades.forEach((quantidade, nome) => {
+      arraySomaQuantidades.push({ nome, quantidade });
+    });
+    setSomaPedidos(arraySomaQuantidades)
+}
 
   async function obterPedido(){
     const pedido = await api.getPedidoAtual()
     setPedido(pedido.data)
+    preencherDados(pedido.data)
   }
 
   async function novoPedido(){
@@ -62,7 +80,7 @@ export default function Home() {
                 }
               </>
             }
-      <NovoItemModal obterPedido={obterPedido}/>
+      <ListaPedidosModal pedido={somaPedidos}/>
     </main>
   );
 }
@@ -91,4 +109,9 @@ export type Sabor = {
   id:number
   descricao:string
   preco:number
+}
+
+export type Items = {
+  nome: string
+  quantidade: number
 }

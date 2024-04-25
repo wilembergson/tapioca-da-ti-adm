@@ -13,6 +13,8 @@ import { LuPackageCheck } from "react-icons/lu";
 import { BsCartPlus } from "react-icons/bs";
 import LoaderBars from './LoaderBars'
 import LoaderCircle from './LoaderCircle'
+import { useGlobalContext } from '../contexts/Contexto'
+import { FaList } from "react-icons/fa6";
 
 type Props = {
     dados:PedidoTipo
@@ -20,6 +22,7 @@ type Props = {
 
 export default function Pedido({dados}:Props){
     const inputRef = useRef<HTMLInputElement>(null)
+    const {setShowNovoItemModal} = useGlobalContext()
     const [editando, setEditando] = useState(false)
     const [pix, setPix] = useState<string>(dados.pix)
     const [loading, setLoading] = useState(false)
@@ -158,6 +161,16 @@ export default function Pedido({dados}:Props){
                             <h2>R${dados.total.toFixed(2)}</h2> 
                         </div>
                     </section>
+                    {dados.itens.length !== 0 ?
+                        <button className='flex bg-laranja text-azul justify-center
+                            items-center rounded-md py-2 mt-2'
+                                onClick={() => setShowNovoItemModal(true)}>
+                            <FaList size={30}/>
+                             <h1 className='flex ml-2 text-lg'>
+                                Lista de pedidos
+                            </h1>
+                        </button> : <></>    
+                    }
                     {dados.status === 'ENTREGUE' ?
                         <button className='flex bg-red-500 text-white justify-center
                             items-center rounded-md py-2 mt-2'
