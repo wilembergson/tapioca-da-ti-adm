@@ -1,4 +1,5 @@
 import { ReactNode } from "react"
+import { ToastContainer } from "react-toastify"
 
 type Props = {
     isVisible: boolean
@@ -11,6 +12,7 @@ export default function Modal({ isVisible, children}: Props) {
     return (
         <div className="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm
             flex justify-center items-center z-20">
+            <ToastContainer/>
             {children}
         </div>
     )

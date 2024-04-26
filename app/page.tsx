@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import Header from "./components/Header";
 import api from "./api/api-connection";
 import Pedido from "./components/Pedido";
-import { TbShoppingCart, TbShoppingCartPlus, TbShoppingCartX } from "react-icons/tb";
+import { TbShoppingCartPlus } from "react-icons/tb";
 import { useGlobalContext } from "./contexts/Contexto"
 import ListaPedidosModal from "./components/ListaPedidosModal";
 import { erroMessage } from './utils/Toasts';
@@ -19,13 +19,17 @@ export default function Home() {
   const [somaPedidos, setSomaPedidos] = useState<Items[]>([])
   const [textoCopiado, setTextoCopiado] = useState('')
 
-    function copiarPedido(pedido: Items[]){
-        let resultado = ''
-        for(const item of pedido!){
-            resultado += `${item.quantidade} ${item.nome}\n`
-        }
-        setTextoCopiado(resultado)
-    }
+  useEffect(() => {
+    Aos.init({ duration: 500 })
+  }, [])
+
+  function copiarPedido(pedido: Items[]){
+      let resultado = ''
+      for(const item of pedido!){
+          resultado += `${item.quantidade} ${item.nome}\n`
+      }
+      setTextoCopiado(resultado)
+  }
 
   function preencherDados(pedido: PedidoTipo){
       const mapSomaQuantidades = new Map<string, number>()

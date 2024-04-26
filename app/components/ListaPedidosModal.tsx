@@ -44,7 +44,7 @@ export default function ListaPedidosModal({pedido, textoCopiado}:Props) {
       }, [textoCopiado]);
     return (
         <Modal isVisible={showNovoItemModal}>
-            <div className="flex flex-col bg-white w-full mx-10 shadow-lg rounded-lg">
+            <div className="flex flex-col bg-white w-full mx-10 shadow-lg rounded-lg" data-aos="zoom-in">
                 <h1 className="`flex text-center font-black text-lg p-2 bg-azul text-laranja rounded-t-lg">
                     Lista de pedidos
                 </h1>
