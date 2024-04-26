@@ -17,6 +17,15 @@ export default function Home() {
   const [pedido, setPedido] = useState<PedidoTipo>()
   const [loading, setLoading] = useState(false)
   const [somaPedidos, setSomaPedidos] = useState<Items[]>([])
+  const [textoCopiado, setTextoCopiado] = useState('')
+
+    function copiarPedido(pedido: Items[]){
+        let resultado = ''
+        for(const item of pedido!){
+            resultado += `${item.quantidade} ${item.nome}\n`
+        }
+        setTextoCopiado(resultado)
+    }
 
   function preencherDados(pedido: PedidoTipo){
       const mapSomaQuantidades = new Map<string, number>()
@@ -34,6 +43,7 @@ export default function Home() {
       arraySomaQuantidades.push({ nome, quantidade });
     });
     setSomaPedidos(arraySomaQuantidades)
+    copiarPedido(arraySomaQuantidades)
 }
 
   async function obterPedido(){
@@ -80,7 +90,7 @@ export default function Home() {
                 }
               </>
             }
-      <ListaPedidosModal pedido={somaPedidos}/>
+      <ListaPedidosModal pedido={somaPedidos} textoCopiado={textoCopiado}/>
     </main>
   );
 }

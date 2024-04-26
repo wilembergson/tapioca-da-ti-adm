@@ -1,21 +1,47 @@
-import { useEffect, useState } from "react";
-import api, { NovoItem } from "../api/api-connection";
+import { useEffect, useRef } from "react";
 import Modal from "./Modal";
-import { Item, Items, PedidoTipo, Sabor } from "../page";
+import { Items } from "../page";
 import { useGlobalContext } from "../contexts/Contexto";
 import { erroMessage, sucessMessage } from "../utils/Toasts";
+import Clipboard from 'clipboard';
+import BotaoCopiar from "./BotaoCopiar";
+import { GiCancel } from "react-icons/gi";
 
 type Props = {
     pedido?:Items[] | undefined
+    textoCopiado?:string | undefined
 }
 
-export default function ListaPedidosModal({pedido}:Props) {
+export default function ListaPedidosModal({pedido, textoCopiado}:Props) {
+    const buttonRef = useRef<HTMLButtonElement>(null);
+    let clipboard: Clipboard | null = null;
     const {showNovoItemModal, setShowNovoItemModal} = useGlobalContext()
-
+    
     function cancelar(){
         setShowNovoItemModal(false)
     }
 
+    useEffect(() => {
+        if (buttonRef.current) {
+          clipboard = new Clipboard(buttonRef.current, {
+            text: () => textoCopiado!
+          });
+    
+          clipboard.on('success', () => {
+            sucessMessage('PIX copiado.')
+          });
+    
+          clipboard.on('error', () => {
+            erroMessage('Erro ao copiar o texto!');
+          });
+        }
+    
+        return () => {
+          if (clipboard) {
+            clipboard.destroy();
+          }
+        };
+      }, [textoCopiado]);
     return (
         <Modal isVisible={showNovoItemModal}>
             <div className="flex flex-col bg-white w-full mx-10 shadow-lg rounded-lg">
@@ -32,13 +58,13 @@ export default function ListaPedidosModal({pedido}:Props) {
                     }
                 </div>
                 <div className="flex p-2">
-                    {/*<button className='flex bg-blue-500 text-white font-white rounded-md p-2 mr-2'
-                        >
-                        Copiar
-                </button>*/}
-                    <button className='flex bg-red-500 text-white font-white rounded-md p-2'
+                    <BotaoCopiar textToCopy={textoCopiado!}/>
+                    <button className='flex items-center bg-red-500 text-white font-white rounded-md p-2'
                         onClick={() => cancelar()}>
-                        Fechar
+                        <GiCancel size={20}/>
+                        <h1 className='flex ml-1'>
+                          Fechar
+                        </h1>
                     </button>
                 </div>
             </div>

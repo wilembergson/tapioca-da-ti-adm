@@ -20,7 +20,7 @@ export default function BotaoCopiar({ textToCopy }:CopyButtonProps){
       });
 
       clipboard.on('success', () => {
-        sucessMessage('PIX copiado.')
+        sucessMessage('Pedido copiado.')
       });
 
       clipboard.on('error', () => {
@@ -36,9 +36,13 @@ export default function BotaoCopiar({ textToCopy }:CopyButtonProps){
   }, [textToCopy]);
 
   return (
-    <button className='flex' ref={buttonRef}>
+    <button className='flex items-center bg-blue-500 text-white font-white rounded-md p-2 mr-2'
+      ref={buttonRef}>
         <ToastContainer/>
-        <FaRegCopy size={28}/>
+        <FaRegCopy size={20}/>
+        <h1 className='flex ml-1'>
+          Copiar
+        </h1>
     </button>
   );
 }
